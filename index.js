@@ -1,8 +1,9 @@
+import "dotenv/config";
 import express from "express";
 
 const app = express();
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 //.use acts as a middleware and is run at every request
 //express.json is used to convert json object recieved from client to javascript object..so req.body now has js object
@@ -34,26 +35,26 @@ app.get("/teas/:id", (req, res) => {
 });
 
 //update tea
-app.put("/teas/:id",(req,res)=>{
+app.put("/teas/:id", (req, res) => {
   const tea = teaData.find((t) => t.id === parseInt(req.params.id));
   if (!tea) {
     return res.status(404).send("Tea not found");
   }
-  const {name,price}=req.body
-  tea.name=name
-  tea.price=price
-  res.status(200).send(tea)
-})
+  const { name, price } = req.body;
+  tea.name = name;
+  tea.price = price;
+  res.status(200).send(tea);
+});
 
 //delete tea
-app.delete("/teas/:id",(req,res)=>{
-  const index=teaData.findIndex(t=>t.id===parseInt(req.params.id))
-  if(index==-1){
-    return res.status(404).send("Tea not found")
+app.delete("/teas/:id", (req, res) => {
+  const index = teaData.findIndex((t) => t.id === parseInt(req.params.id));
+  if (index == -1) {
+    return res.status(404).send("Tea not found");
   }
-  teaData.splice(index,1)
-  res.status(204).send("Deleted")
-})
+  teaData.splice(index, 1);
+  res.status(204).send("Deleted");
+});
 
 app.listen(port, () => {
   //if it succesfully listens to port then function will be executed
